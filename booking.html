@@ -1,0 +1,87 @@
+<html>  
+    <head>
+        <title>Booking Table</title>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+        <link rel="shortcut icon" href="https://static.vecteezy.com/system/resources/previews/023/080/770/non_2x/healthy-food-logo-concept-logo-with-the-symbol-of-a-spoon-fork-and-leaf-can-be-for-restaurants-healthy-food-products-website-logos-for-food-consultants-vector.jpg">
+        <link rel="stylesheet" href="style.css">
+        <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    </head>
+    <body>
+     <div class="booking-overlay">
+      <div class="booking-form">
+
+       <span class="close">×</span>
+
+       <h2>Book Your Table</h2>
+
+       <label>Name</label>
+       <input type="text" id="name" placeholder="Full Name">
+
+       <label>Phone Number</label>
+       <input type="tel" id="phone" placeholder="Phone Number">
+
+       <label>Date</label>
+       <input type="date" id="date">
+
+       <label>Time</label>
+       <input type="time" id="time">
+
+       <button onclick="bookTable()">Book Now</button>
+       <p id="message"></p>
+
+      </div>
+     </div>
+    <script>
+      function bookTable() {
+
+     let name = document.getElementById("name").value;
+     let phone = document.getElementById("phone").value;
+     let date = document.getElementById("date").value;
+     let time = document.getElementById("time").value;
+
+     let message = document.getElementById("message");
+
+    // Check empty fields
+     if (name === "" || phone === "" || date === "" || time === "") {
+
+        message.innerText = "Please fill all the details.";
+        message.style.color = "red";
+        return;
+     } 
+
+    // Get previous bookings
+     let bookings = JSON.parse(localStorage.getItem("bookings")) || [];
+
+    // Check same date and time
+     let alreadyBooked = bookings.some(function(booking) {
+
+        return booking.date === date && booking.time === time;
+
+     });
+ 
+     if (alreadyBooked) {
+
+        message.innerText = "This time slot is already booked!";
+        message.style.color = "red";
+
+     } else {
+
+        let newBooking = {
+            name: name,
+            phone: phone,
+            date: date,
+            time: time
+        };
+
+        bookings.push(newBooking);
+
+        localStorage.setItem("bookings", JSON.stringify(bookings));
+
+        message.innerText = "Table booked successfully!";
+        message.style.color = "green";
+     }
+
+    } 
+    </script>
+    </body>
+</html> 
